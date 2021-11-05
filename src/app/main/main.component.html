@@ -1,0 +1,157 @@
+<header>
+    <div class="title">
+        <p>Angular Blog</p>
+    </div>
+    <div class="reg">
+        <div class="begin" *ngIf="begin">
+            <button class="signIn" data-bs-toggle="modal" data-bs-target="#signInModal">Sign in</button>
+            <button class="singUp" data-bs-toggle="modal" data-bs-target="#signUpModal">Sign Up </button>
+        </div>
+        <div class="after" *ngIf="after">
+            <button class="addPost" data-bs-toggle="modal" data-bs-target="#addPostModal">Add post</button>
+            <button class="name" disabled>{{str | titlecase}}</button>
+            <button class="signOut" (click)="signOut()">Sign Out</button>
+        </div>
+    </div>
+</header>
+<div class="modal fade" id="signInModal" tabindex="-1" aria-labelledby="signInModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="signInModalLabel">Sign In</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Email address:</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                            [(ngModel)]="emailSignIn" name="emailSignIn" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Password:</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1"
+                            [(ngModel)]="passwordSignIn" name="passwordSignIn" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button data-bs-dismiss="modal" type="button" class="btn btn-success" (click)="entry()" (click)="displayOn()">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="signUpModal" tabindex="-1" aria-labelledby="signUpModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="signUpModalLabel">Sign Up</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Username:</label>
+                        <input type="text" class="form-control" id="exampleInputPassword1" [(ngModel)]="Username"
+                            name="Username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Email address:</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                            [(ngModel)]="signUpEmail" name="signUpEmail" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Password:</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1" [(ngModel)]="password"
+                            name="password" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button data-bs-dismiss="modal" type="button" class="btn btn-primary"
+                    (click)="addUsers()" (click)="displayOn()">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="block" *ngFor="let info of mainBlog">
+        <div class="blog">
+            <div class="left-side">
+                <h1>{{ info.topic }}</h1>
+                <p style="color: grey;">PostedBy: {{ info.postedBy}}</p>
+                <p>{{ info.message}}</p>
+            </div>
+            <div class="right-side">
+                <i class="far fa-clock"></i>
+                <p style="color: grey">{{info.date | date:"short"}}</p>
+            </div>
+        </div>
+        <div class="buttons" *ngIf="display">
+            <button class="btn btn-warning" data-bs-toggle="modal" 
+            data-bs-target="#editModal"
+                (click)="editBlog(info)">Edit</button>
+            <button class="btn btn-danger" (click)="deleteBlog(info)">delete</button>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="addPostModal" tabindex="-1" aria-labelledby="addPostModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addPostModalLabel">Add post</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Title:</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                            [(ngModel)]="titlePost" name="titlePost">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Text:</label>
+                        <textarea class="form-control" rows="3" [(ngModel)]="textPost" name="textPost"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button data-bs-dismiss="modal" type="button" class="btn btn-success" (click)="addPost()">Edit
+                    Post</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Add Post</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Title:</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                            [(ngModel)]="newTitle" name="newTitle">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Text:</label>
+                        <textarea class="form-control" rows="3" [(ngModel)]="newText" name="newText"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="editPost()">Edit
+                    Post</button>
+            </div>
+        </div>
+    </div>
+</div>
